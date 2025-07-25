@@ -13,8 +13,8 @@ EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
 # Opcional – defina isso se for usar o WhatsApp
-WHATSAPP_API_URL = 
-WHATSAPP_NUMERO = 
+WHATSAPP_API_URL = ""
+WHATSAPP_NUMERO = ""
 
 def consultar_precos():
     headers = {
