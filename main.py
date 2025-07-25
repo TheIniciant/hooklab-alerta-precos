@@ -17,14 +17,10 @@ WHATSAPP_API_URL = ""
 WHATSAPP_NUMERO = ""
 
 def consultar_precos():
-
     headers = {
-         "access-token": API_TOKEN
-     }
- url = API_BASE  
-    # === TESTE 3: token direto na URL ===
-    # headers = {}
-    # url = f"{API_BASE}&access-token={API_TOKEN}"
+        "access-token": API_TOKEN
+    }
+    url = API_BASE  # <-- Corrigido com a indentação correta!
 
     try:
         res = requests.get(url, headers=headers)
@@ -50,6 +46,7 @@ def consultar_precos():
     except Exception as e:
         print("Erro ao consultar API:", str(e))
         raise
+
 
 def formatar_mensagem(alertas):
     texto = f"Alertas de preços fora do ideal ({datetime.now().strftime('%d/%m/%Y %H:%M')}):\n"
