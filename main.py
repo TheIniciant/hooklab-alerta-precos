@@ -13,7 +13,9 @@ EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
 def consultar_precos():
-    headers = {"access-token": X1e1rbSje4iX205cx4St9Y2DJ2u37hqY5HdY0UXm47KdBwmOIi}
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}"
+    }
     res = requests.get(API_URL, headers=headers)
     res.raise_for_status()
     data = res.json().get("data", [])
@@ -34,6 +36,7 @@ def consultar_precos():
                 "preco_ideal_max": max_preco
             })
     return alertas
+
 
 def formatar_mensagem(alertas):
     texto = f"Alertas de preços fora do ideal ({datetime.now().strftime('%d/%m/%Y %H:%M')}):\n"
