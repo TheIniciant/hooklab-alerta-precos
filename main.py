@@ -134,7 +134,10 @@ def enviar_email(mensagem):
 def enviar_whatsapp(mensagem):
     payload = {"phone": WHATSAPP_NUMERO, "message": mensagem}
     headers = {"Content-Type": "application/json"}
-    requests.post(WHATSAPP_API_URL, json=payload, headers=headers)
+     try:
+            requests.post(WHATSAPP_API_URL, json=payload, headers=headers)
+        except Exception as e:
+            print(f"Erro ao enviar WhatsApp: {e}")
 
 @app.route("/", methods=["GET"])
 def home():
