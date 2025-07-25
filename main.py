@@ -12,14 +12,25 @@ EMAIL_REMETENTE = "comercial@singularbaby.com.br"
 EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
-# Deixe vazio se não for usar WhatsApp
 WHATSAPP_API_URL = ""
 WHATSAPP_NUMERO = ""
 
 def consultar_precos():
+    # Opção 1: Header com "Authorization: Bearer"
     headers = {
-        "access-token": API_TOKEN
+        "Authorization": f"Bearer {API_TOKEN}"
     }
+
+    # 👉 Se a opção 1 não funcionar, comente ela e ative a opção 2:
+    # headers = {
+    #     "access_token": API_TOKEN
+    # }
+
+    # 👉 Se nenhuma funcionar, tente a opção 3 com token na URL:
+    # url = f"https://api.hooklab.com.br/offers?offset=0&limit=100&access-token={API_TOKEN}"
+    # res = requests.get(url)
+    # return ...
+
     res = requests.get(API_URL, headers=headers)
     res.raise_for_status()
     data = res.json().get("data", [])
