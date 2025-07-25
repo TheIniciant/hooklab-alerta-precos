@@ -64,6 +64,11 @@ def enviar_whatsapp(mensagem):
     headers = {"Content-Type": "application/json"}
     requests.post(WHATSAPP_API_URL, json=payload, headers=headers)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Servidor Flask rodando com sucesso!"
+
+
 @app.route("/executar-alerta", methods=["POST"])
 def executar_alerta():
     alertas = consultar_precos()
