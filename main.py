@@ -12,10 +12,14 @@ EMAIL_REMETENTE = "comercial@singularbaby.com.br"
 EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
+# Opcional – defina isso se for usar o WhatsApp
+WHATSAPP_API_URL = "https://sua.api.whatsapp.com/send"
+WHATSAPP_NUMERO = "5511999999999"
+
 def consultar_precos():
-        headers = {
-    "access-token": API_TOKEN
-}
+    headers = {
+        "access-token": API_TOKEN
+    }
     res = requests.get(API_URL, headers=headers)
     res.raise_for_status()
     data = res.json().get("data", [])
@@ -37,7 +41,6 @@ def consultar_precos():
             })
     return alertas
 
-
 def formatar_mensagem(alertas):
     texto = f"Alertas de preços fora do ideal ({datetime.now().strftime('%d/%m/%Y %H:%M')}):\n"
     for a in alertas:
@@ -46,39 +49,4 @@ Cliente: {a['cliente']}
 Produto: {a['produto']}
 Link: {a['link']}
 Preço atual: R$ {a['preco_atual']}
-Faixa ideal: R$ {a['preco_ideal_min']} ~ R$ {a['preco_ideal_max']}\n"""
-    return texto
-
-def enviar_email(mensagem):
-    msg = EmailMessage()
-    msg['Subject'] = 'Alerta de Preços Fora do Ideal - Hooklab'
-    msg['From'] = EMAIL_REMETENTE
-    msg['To'] = EMAIL_DESTINO
-    msg.set_content(mensagem)
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-        smtp.login(EMAIL_REMETENTE, EMAIL_SENHA)
-        smtp.send_message(msg)
-
-def enviar_whatsapp(mensagem):
-    payload = {"phone": WHATSAPP_NUMERO, "message": mensagem}
-    headers = {"Content-Type": "application/json"}
-    requests.post(WHATSAPP_API_URL, json=payload, headers=headers)
-
-@app.route("/", methods=["GET"])
-def home():
-    return "Servidor Flask rodando com sucesso!"
-
-
-@app.route("/executar-alerta", methods=["POST"])
-def executar_alerta():
-    alertas = consultar_precos()
-    if alertas:
-        mensagem = formatar_mensagem(alertas)
-        enviar_email(mensagem)
-        enviar_whatsapp(mensagem)
-        return jsonify({"status": "ok", "mensagem": "Alertas enviados com sucesso"}), 200
-    else:
-        return jsonify({"status": "ok", "mensagem": "Todos os preços estão corretos"}), 200
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+Faixa ideal: R$ {a['preco]()
