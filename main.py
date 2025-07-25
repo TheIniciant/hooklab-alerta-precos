@@ -21,7 +21,7 @@ def consultar_precos():
     headers = {
          "access-token": API_TOKEN
      }
-
+ url = API_BASE  
     # === TESTE 3: token direto na URL ===
     # headers = {}
     # url = f"{API_BASE}&access-token={API_TOKEN}"
