@@ -17,16 +17,10 @@ WHATSAPP_API_URL = ""
 WHATSAPP_NUMERO = ""
 
 def consultar_precos():
-    # ===== TESTE 1: Authorization: Bearer ====
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
-    }
-    url = API_BASE
 
-    # === TESTE 2: access-token no cabeçalho ===
-    # headers = {
-    #     "access-token": API_TOKEN
-    # }
+    headers = {
+         "access-token": API_TOKEN
+     }
 
     # === TESTE 3: token direto na URL ===
     # headers = {}
