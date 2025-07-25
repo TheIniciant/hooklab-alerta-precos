@@ -13,8 +13,10 @@ EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
 def consultar_precos():
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
+        headers = {
+    "access-token": API_TOKEN
+}
+
     }
     res = requests.get(API_URL, headers=headers)
     res.raise_for_status()
