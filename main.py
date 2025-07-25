@@ -6,51 +6,56 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-API_URL = "https://api.hooklab.com.br/offers?offset=0&limit=100"
+API_BASE = "https://api.hooklab.com.br/offers?offset=0&limit=100"
 API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.ST7vv73vv70BJO-_vdKJBe-_ve-_ve-_vUbvv71p.LDy2xFueZDZwlWcmOZIOQ96eG74qQ0N1Rc_9bxPvDYs"
+
 EMAIL_REMETENTE = "comercial@singularbaby.com.br"
-EMAIL_SENHA = "dkvk ghme rkmu imia"
+EMAIL_SENHA = "dkvk ghme rkmu imia"  # Usar senha de app se tiver 2FA
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
 
 WHATSAPP_API_URL = ""
 WHATSAPP_NUMERO = ""
 
 def consultar_precos():
-    # Opção 1: Header com "Authorization: Bearer"
+    # ===== TESTE 1: Authorization: Bearer ====
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
+    url = API_BASE
 
-    # 👉 Se a opção 1 não funcionar, comente ela e ative a opção 2:
+    # === TESTE 2: access-token no cabeçalho ===
     # headers = {
-    #     "access_token": API_TOKEN
+    #     "access-token": API_TOKEN
     # }
 
-    # 👉 Se nenhuma funcionar, tente a opção 3 com token na URL:
-    # url = f"https://api.hooklab.com.br/offers?offset=0&limit=100&access-token={API_TOKEN}"
-    # res = requests.get(url)
-    # return ...
+    # === TESTE 3: token direto na URL ===
+    # headers = {}
+    # url = f"{API_BASE}&access-token={API_TOKEN}"
 
-    res = requests.get(API_URL, headers=headers)
-    res.raise_for_status()
-    data = res.json().get("data", [])
-    alertas = []
-    for oferta in data:
-        preco = oferta.get("price")
-        min_preco = oferta.get("markups", {}).get("monetary_min_price")
-        max_preco = oferta.get("markups", {}).get("monetary_max_price")
-        if preco is None or min_preco is None or max_preco is None:
-            continue
-        if preco < min_preco or preco > max_preco:
-            alertas.append({
-                "cliente": oferta.get("store", {}).get("name"),
-                "produto": oferta.get("title"),
-                "link": oferta.get("offer_link"),
-                "preco_atual": preco,
-                "preco_ideal_min": min_preco,
-                "preco_ideal_max": max_preco
-            })
-    return alertas
+    try:
+        res = requests.get(url, headers=headers)
+        res.raise_for_status()
+        data = res.json().get("data", [])
+        alertas = []
+        for oferta in data:
+            preco = oferta.get("price")
+            min_preco = oferta.get("markups", {}).get("monetary_min_price")
+            max_preco = oferta.get("markups", {}).get("monetary_max_price")
+            if preco is None or min_preco is None or max_preco is None:
+                continue
+            if preco < min_preco or preco > max_preco:
+                alertas.append({
+                    "cliente": oferta.get("store", {}).get("name"),
+                    "produto": oferta.get("title"),
+                    "link": oferta.get("offer_link"),
+                    "preco_atual": preco,
+                    "preco_ideal_min": min_preco,
+                    "preco_ideal_max": max_preco
+                })
+        return alertas
+    except Exception as e:
+        print("Erro ao consultar API:", str(e))
+        raise
 
 def formatar_mensagem(alertas):
     texto = f"Alertas de preços fora do ideal ({datetime.now().strftime('%d/%m/%Y %H:%M')}):\n"
@@ -97,7 +102,7 @@ def executar_alerta():
                 enviar_whatsapp(mensagem)
             except Exception as e:
                 print("Erro ao enviar WhatsApp:", str(e))
-            return jsonify({"status": "ok", "mensagem": "Alertas processados com sucesso"}), 200
+            return jsonify({"status": "ok", "mensagem": "Alertas enviados com sucesso"}), 200
         else:
             return jsonify({"status": "ok", "mensagem": "Todos os preços estão corretos"}), 200
     except Exception as e:
