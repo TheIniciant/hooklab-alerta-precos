@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 API_URL = "https://api.hooklab.com.br/offers?offset=0&limit=100"
-API_TOKEN = "X1e1rbSje4iX205cx4St9Y2DJ2u37hqY5HdY0UXm47KdBwmOIi"
+API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.ST7vv73vv70BJO-_vdKJBe-_ve-_ve-_vUbvv71p.LDy2xFueZDZwlWcmOZIOQ96eG74qQ0N1Rc_9bxPvDYs"
 EMAIL_REMETENTE = "comercial@singularbaby.com.br"
 EMAIL_SENHA = "dkvk ghme rkmu imia"
 EMAIL_DESTINO = "luissilva@madeiranit.com.br"
