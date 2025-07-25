@@ -49,4 +49,4 @@ Cliente: {a['cliente']}
 Produto: {a['produto']}
 Link: {a['link']}
 Preço atual: R$ {a['preco_atual']}
-Faixa ideal: R$ {a['preco]()
+Faixa ideal: R$ {a['preco']()
