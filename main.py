@@ -16,8 +16,6 @@ def consultar_precos():
         headers = {
     "access-token": API_TOKEN
 }
-
-    }
     res = requests.get(API_URL, headers=headers)
     res.raise_for_status()
     data = res.json().get("data", [])
