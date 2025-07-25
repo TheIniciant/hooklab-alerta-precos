@@ -74,14 +74,24 @@ def home():
 
 @app.route("/executar-alerta", methods=["POST"])
 def executar_alerta():
-    alertas = consultar_precos()
-    if alertas:
-        mensagem = formatar_mensagem(alertas)
-        enviar_email(mensagem)
-        enviar_whatsapp(mensagem)
-        return jsonify({"status": "ok", "mensagem": "Alertas enviados com sucesso"}), 200
-    else:
-        return jsonify({"status": "ok", "mensagem": "Todos os preços estão corretos"}), 200
+    try:
+        alertas = consultar_precos()
+        if alertas:
+            mensagem = formatar_mensagem(alertas)
+            try:
+                enviar_email(mensagem)
+            except Exception as e:
+                print("Erro ao enviar email:", str(e))
+            try:
+                enviar_whatsapp(mensagem)
+            except Exception as e:
+                print("Erro ao enviar WhatsApp:", str(e))
+            return jsonify({"status": "ok", "mensagem": "Alertas processados com sucesso"}), 200
+        else:
+            return jsonify({"status": "ok", "mensagem": "Todos os preços estão corretos"}), 200
+    except Exception as e:
+        print("Erro geral:", str(e))
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
