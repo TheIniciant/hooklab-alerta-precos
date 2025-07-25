@@ -40,7 +40,7 @@ def consultar_precos():
                 "preco_ideal_max": max_preco
             })
     return alertas
-
+    
 def formatar_mensagem(alertas):
     texto = f"Alertas de preços fora do ideal ({datetime.now().strftime('%d/%m/%Y %H:%M')}):\n"
     for a in alertas:
@@ -50,4 +50,4 @@ Produto: {a['produto']}
 Link: {a['link']}
 Preço atual: R$ {a['preco_atual']}
 Faixa ideal: R$ {a['preco_ideal_min']} ~ R$ {a['preco_ideal_max']}\n"""
-
+    return texto
